@@ -323,14 +323,22 @@ namespace AwesomeShell
 
 			if (currentPosition > 0)
 			{
+				char firstChar;
+
 				if (currentNode == null)
+				{
+					firstChar = lastNode.Value;
 					currentNode = lastNode;
+				}
 				else
+				{
 					currentNode = currentNode.PreviousNode;
+					firstChar = currentNode.Value;
+				}
 
 				--currentPosition;
 
-				var charTester = GetMoveLeftCharTester();
+				var charTester = GetMoveLeftCharTester(firstChar);
 
 				while (currentNode.PreviousNode != null && charTester(currentNode.PreviousNode.Value))
 				{
@@ -379,14 +387,22 @@ namespace AwesomeShell
 			{
 				var nodeAfterSelection = currentNode;
 
+				char firstChar;
+
 				if (currentNode == null)
+				{
+					firstChar = lastNode.Value;
 					currentNode = lastNode;
+				}
 				else
+				{
 					currentNode = currentNode.PreviousNode;
+					firstChar = currentNode.Value;
+				}
 
 				--currentPosition;
 
-				var charTester = GetMoveLeftCharTester();
+				var charTester = GetMoveLeftCharTester(firstChar);
 
 				while (currentNode.PreviousNode != null && charTester(currentNode.PreviousNode.Value))
 				{
@@ -454,15 +470,23 @@ namespace AwesomeShell
 			{
 				var nodeAfterErase = currentNode;
 
+				char firstChar;
+
 				if (currentNode == null)
+				{
+					firstChar = lastNode.Value;
 					currentNode = lastNode;
+				}
 				else
+				{
 					currentNode = currentNode.PreviousNode;
+					firstChar = currentNode.Value;
+				}
 
 				var length = 1;
 				--currentPosition;
 
-				var charTester = GetMoveLeftCharTester();
+				var charTester = GetMoveLeftCharTester(firstChar);
 
 				while (currentNode.PreviousNode != null && charTester(currentNode.PreviousNode.Value))
 				{
@@ -531,27 +555,25 @@ namespace AwesomeShell
 			SetCursorPosition();
 		}
 
-		private Func<char, bool> GetMoveLeftCharTester()
+		private Func<char, bool> GetMoveLeftCharTester(char firstChar)
 		{
-			Func<char, bool> charTester;
-			var previousValue = 'a';
+			var previousValue = firstChar;
 
-			if (char.IsLetterOrDigit(currentNode.Value))
+			if (char.IsLetterOrDigit(firstChar))
 				if (useCamelHumps)
-					if (char.IsUpper(currentNode.Value))
-						charTester = value => false;
+					if (char.IsUpper(firstChar))
+						return value => false;
 					else
-						charTester = value =>
+						return value =>
 						{
 							bool result = !char.IsUpper(previousValue) && char.IsLetterOrDigit(value);
 							previousValue = value;
 							return result;
 						};
 				else
-					charTester = value => char.IsLetterOrDigit(value);
+					return value => char.IsLetterOrDigit(value);
 			else
-				charTester = value => !char.IsLetterOrDigit(value);
-			return charTester;
+				return value => !char.IsLetterOrDigit(value);
 		}
 
 		private Func<char, bool> GetMoveRightCharTester()
