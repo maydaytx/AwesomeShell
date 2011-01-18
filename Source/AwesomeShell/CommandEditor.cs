@@ -356,21 +356,23 @@ namespace AwesomeShell
 
 			if (currentNode != null)
 			{
+				var firstChar = currentNode.Value;
+
 				currentNode = currentNode.NextNode;
 
 				++currentPosition;
 
-				if (currentNode != null)
-				{
-					var charTester = GetMoveRightCharTester();
+				var charTester = GetMoveRightCharTester(firstChar);
 
+				if (currentNode != null && charTester(currentNode.Value))
+				{
 					while (currentNode.NextNode != null && charTester(currentNode.NextNode.Value))
 					{
 						currentNode = currentNode.NextNode;
 						++currentPosition;
 					}
 
-					if (currentNode.NextNode == null)
+					if (currentNode.NextNode == null && charTester(currentNode.Value))
 					{
 						currentNode = null;
 						currentPosition = commandLength;
@@ -429,16 +431,18 @@ namespace AwesomeShell
 		{
 			if (currentNode != null)
 			{
+				var firstChar = currentNode.Value;
+
 				currentNode.IsSelected = !currentNode.IsSelected;
 				WriteNode(currentNode);
 
 				currentNode = currentNode.NextNode;
 				++currentPosition;
 
-				if (currentNode != null)
-				{
-					var charTester = GetMoveRightCharTester();
+				var charTester = GetMoveRightCharTester(firstChar);
 
+				if (currentNode != null && charTester(currentNode.Value))
+				{
 					while (currentNode.NextNode != null && charTester(currentNode.NextNode.Value))
 					{
 						currentNode.IsSelected = !currentNode.IsSelected;
@@ -448,7 +452,7 @@ namespace AwesomeShell
 						++currentPosition;
 					}
 
-					if (currentNode.NextNode == null)
+					if (currentNode.NextNode == null && charTester(currentNode.Value))
 					{
 						currentNode.IsSelected = !currentNode.IsSelected;
 						WriteNode(currentNode);
@@ -511,20 +515,22 @@ namespace AwesomeShell
 			{
 				var nodeBeforeErase = currentNode.PreviousNode;
 
+				var firstChar = currentNode.Value;
+
 				currentNode = currentNode.NextNode;
 				var length = 1;
 
-				if (currentNode != null)
-				{
-					var charTester = GetMoveRightCharTester();
+				var charTester = GetMoveRightCharTester(firstChar);
 
+				if (currentNode != null && charTester(currentNode.Value))
+				{
 					while (currentNode.NextNode != null && charTester(currentNode.NextNode.Value))
 					{
 						currentNode = currentNode.NextNode;
 						++length;
 					}
 
-					if (currentNode.NextNode == null)
+					if (currentNode.NextNode == null && charTester(currentNode.Value))
 					{
 						currentNode = null;
 						++length;
@@ -576,49 +582,40 @@ namespace AwesomeShell
 				return value => !char.IsLetterOrDigit(value);
 		}
 
-		private Func<char, bool> GetMoveRightCharTester()
+		private Func<char, bool> GetMoveRightCharTester(char firstChar)
 		{
-			Func<char, bool> charTester;
-			char previousValue;
+			var previousValue = firstChar;
 
-			if (char.IsLetterOrDigit(currentNode.Value))
-			{
+			if (char.IsLetterOrDigit(firstChar))
 				if (useCamelHumps)
 				{
 					previousValue = 'a';
 
-					charTester = value =>
+					return value =>
 					{
-						var result = char.IsLetterOrDigit(value) && !char.IsUpper(previousValue) || !char.IsLetterOrDigit(value) && char.IsLetterOrDigit(previousValue);
+						var result = char.IsLetterOrDigit(previousValue) && (char.IsLetterOrDigit(value) && !char.IsUpper(previousValue) || !char.IsLetterOrDigit(value) && char.IsLetterOrDigit(previousValue));
 						previousValue = value;
 						return result;
 					};
 				}
 				else
 				{
-					previousValue = 'a';
-
-					charTester = value =>
+					return value =>
 					{
-						var result = char.IsLetterOrDigit(value) || char.IsLetterOrDigit(previousValue);
+						var result = char.IsLetterOrDigit(value) && char.IsLetterOrDigit(previousValue) || char.IsLetterOrDigit(previousValue);
 						previousValue = value;
 						return result;
 					};
 				}
-			}
 			else
 			{
-				previousValue = ' ';
-
-				charTester = value =>
+				return value =>
 				{
-					var result = !char.IsLetterOrDigit(value) || !char.IsLetterOrDigit(previousValue);
+					var result = !char.IsLetterOrDigit(value) && !char.IsLetterOrDigit(previousValue) || !char.IsLetterOrDigit(previousValue);
 					previousValue = value;
 					return result;
 				};
 			}
-
-			return charTester;
 		}
 
 		private void WriteNode(CharNode nodeToWrite)
