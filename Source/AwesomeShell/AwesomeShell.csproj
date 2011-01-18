@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{11AE0A5C-A16A-40FD-B23C-C122ED9BE574}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AwesomeShell</RootNamespace>
+    <AssemblyName>AwesomeShell</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandEditor.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="InputHandlers\BackspaceHandler.cs" />
+    <Compile Include="InputHandlers\CtrlBackspaceHandler.cs" />
+    <Compile Include="InputHandlers\CtrlDeleteHandler.cs" />
+    <Compile Include="InputHandlers\CtrlLeftArrowHandler.cs" />
+    <Compile Include="InputHandlers\CtrlRightArrowHandler.cs" />
+    <Compile Include="InputHandlers\CtrlShiftLeftArrowHandler.cs" />
+    <Compile Include="InputHandlers\CtrlShiftRightArrowHandler.cs" />
+    <Compile Include="InputHandlers\DeleteHandler.cs" />
+    <Compile Include="InputHandlers\EndHandler.cs" />
+    <Compile Include="InputHandlers\HomeHandler.cs" />
+    <Compile Include="IInputHandler.cs" />
+    <Compile Include="InputHandlers\ShiftEndHandler.cs" />
+    <Compile Include="InputHandlers\ShiftHomeHandler.cs" />
+    <Compile Include="InputHandlers\ShiftLeftArrowHandler.cs" />
+    <Compile Include="InputHandlers\ShiftRightArrowHandler.cs" />
+    <Compile Include="KeyCombo.cs" />
+    <Compile Include="InputHandlers\LeftArrowHandler.cs" />
+    <Compile Include="InputHandlers\PrintableCharacterHandler.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InputHandlers\RightArrowHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
